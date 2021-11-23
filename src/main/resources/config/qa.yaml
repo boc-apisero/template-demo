@@ -1,0 +1,24 @@
+### Environment specific non secure  properties go here ###
+
+
+### API ID ### Create API Configuration in API Manager for DEV Env and update the id. 
+api:
+  id: "1"
+  
+
+https:
+  listener:
+    host: "0.0.0.0"
+  private:   
+    port: "8092"
+json:
+  logger:
+    disabled:
+      fields: ""
+
+
+
+
+  
+
+  

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd ">
+    
+ 	 <apikit:config name="raml-specification-template-api-config" api="resource::6bd62dba-2bb4-43de-a36b-b91e48c41d39:raml-specification-template-api:1.0.0:raml:zip:raml-specification-template-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+ 	 
+ 	 <flow name="raml-specification-template-api-main">
+        <http:listener path="/api/*" config-ref="api-httpListenerConfig">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:error-response>
+        </http:listener>
+        <flow-ref doc:name="util:api-entry" doc:id="5d37b289-5dae-4647-add6-14d7f4402464" name="util:api-entry" />
+        <apikit:router config-ref="raml-specification-template-api-config" />
+        <flow-ref doc:name="util:api-exit" doc:id="65c4c67a-11eb-4c97-9aa5-2da5e30fbcdc" name="util:api-exit" />
+    </flow> 
+    <flow name="get:\template:raml-specification-template-api-config">
+        <flow-ref doc:name="impl-get-template" doc:id="74c1ce50-6c11-4eb2-957f-353f387b2905" name="impl-get-template" />
+    </flow>
+    <flow name="get:\health:raml-specification-template-api-config">
+        <flow-ref doc:name="util:healthcheck" doc:id="549bd54e-2b19-4a85-9f1c-ff6c5f6a5096" name="util:healthcheck" />
+    </flow>
+</mule>
